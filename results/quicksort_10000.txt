@@ -1,0 +1,70 @@
+goos: linux
+goarch: amd64
+pkg: io.com/sort/quicksort
+cpu: Intel(R) Core(TM) Ultra 5 135U
+BenchmarkQuickSort-14    	    1453	    826960 ns/op
+PASS
+ok  	io.com/sort/quicksort	1.295s
+goos: linux
+goarch: amd64
+pkg: io.com/sort/quicksort
+cpu: Intel(R) Core(TM) Ultra 5 135U
+BenchmarkQuickSort-14    	    1468	    839074 ns/op
+PASS
+ok  	io.com/sort/quicksort	2.340s
+goos: linux
+goarch: amd64
+pkg: io.com/sort/quicksort
+cpu: Intel(R) Core(TM) Ultra 5 135U
+BenchmarkQuickSort-14    	    1375	    839279 ns/op
+PASS
+ok  	io.com/sort/quicksort	1.253s
+goos: linux
+goarch: amd64
+pkg: io.com/sort/quicksort
+cpu: Intel(R) Core(TM) Ultra 5 135U
+BenchmarkQuickSort-14    	    1478	    843916 ns/op
+PASS
+ok  	io.com/sort/quicksort	1.339s
+goos: linux
+goarch: amd64
+pkg: io.com/sort/quicksort
+cpu: Intel(R) Core(TM) Ultra 5 135U
+BenchmarkQuickSort-14    	    1446	    869906 ns/op
+PASS
+ok  	io.com/sort/quicksort	1.351s
+goos: linux
+goarch: amd64
+pkg: io.com/sort/quicksort
+cpu: Intel(R) Core(TM) Ultra 5 135U
+BenchmarkQuickSort-14    	    1274	    825120 ns/op
+PASS
+ok  	io.com/sort/quicksort	1.157s
+goos: linux
+goarch: amd64
+pkg: io.com/sort/quicksort
+cpu: Intel(R) Core(TM) Ultra 5 135U
+BenchmarkQuickSort-14    	    1414	    855236 ns/op
+PASS
+ok  	io.com/sort/quicksort	1.305s
+goos: linux
+goarch: amd64
+pkg: io.com/sort/quicksort
+cpu: Intel(R) Core(TM) Ultra 5 135U
+BenchmarkQuickSort-14    	    1431	    851895 ns/op
+PASS
+ok  	io.com/sort/quicksort	1.315s
+goos: linux
+goarch: amd64
+pkg: io.com/sort/quicksort
+cpu: Intel(R) Core(TM) Ultra 5 135U
+BenchmarkQuickSort-14    	    1458	    814673 ns/op
+PASS
+ok  	io.com/sort/quicksort	1.279s
+goos: linux
+goarch: amd64
+pkg: io.com/sort/quicksort
+cpu: Intel(R) Core(TM) Ultra 5 135U
+BenchmarkQuickSort-14    	    1480	    861085 ns/op
+PASS
+ok  	io.com/sort/quicksort	1.369s
