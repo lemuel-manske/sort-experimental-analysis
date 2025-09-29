@@ -8,7 +8,7 @@ To regenerate results, execute:
 chmod +x ./compute.sh && ./compute.sh
 ```
 
-Results are kept under [results](./results) folder.
+Results are kept under [results](./results) folder - [index.csv](./results/index.csv) keeps all results, you can ignore other files.
 
 The final paper LaTeX code can be view under [paper](./paper) folder.
 
