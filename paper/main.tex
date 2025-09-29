@@ -30,27 +30,23 @@ Este trabalho tem como objetivo avaliar empiricamente o comportamento de três a
 
 \section{Introdução}
 
-O problema de ordenação é, considerado por muitos cientistas da computação, como o problema mais fundamental no estudo de algoritmos: A ordenação eficiente de conjuntos de dados é essencial em diversos contextos, até mesmo sendo a base para outros algoritmos .
+O problema de ordenação é, considerado por muitos cientistas da computação, como o problema mais fundamental no estudo de algoritmos: A ordenação eficiente de conjuntos de dados é essencial em diversos contextos, sendo até mesmo a base para o desenvolvimento de outros algoritmos.
 
-Neste trabalho, analisamos comparativamente três algoritmos clássicos: Bubble Sort, um algoritmo de comparação simples, cuja complexidade temporal no pior caso é $O(n^2)$; Merge Sort, um algoritmo baseado na estratégia de divisão e conquista, com desempenho garantido de $O(n \log n)$ em todos os casos; e Quick Sort, também baseado em divisão e conquista, que apresenta tempo médio de execução $O(n \log n)$, embora em casos degenerados possa alcançar $O(n^2)$.
+Neste trabalho, foi realizada a análise comparativa de três algoritmos de ordenação clássicos: Bubble Sort, um algoritmo de comparação simples, cuja complexidade temporal no pior caso é $O(n^2)$; Merge Sort, um algoritmo baseado na estratégia de divisão e conquista, com desempenho garantido de $O(n \log n)$ em todos os casos; e Quick Sort, também baseado em divisão e conquista, que apresenta tempo médio de execução $O(n \log n)$, embora em casos degenerados possa alcançar $O(n^2)$.
 
-A metodologia adotada consistiu na implementação clássica dos três algoritmos na linguagem Go \cite{golang} --- utilizando iteração recursiva para Merge Sort e Bubble Sort --- e execução de benchmarks controlados. As entradas utilizadas foram vetores de $n$ elementos, preenchidos com inteiros pseudoaleatórios uniformemente distribuídos no intervalo $[0, 10n)$, gerados pela função \texttt{rand.Intn} da biblioteca padrão da linguagem. Cada experimento foi repetido múltiplas vezes, de modo a reduzir o impacto de variações no ambiente de execução e permitir uma análise estatística confiável dos tempos de execução observados.
+A metodologia adotada consistiu na implementação clássica dos três algoritmos na linguagem Go \cite{golang} --- utilizando iteração recursiva para Merge Sort e Quick Sort --- e execução de benchmarks controlados. As entradas utilizadas foram vetores de $n$ elementos, preenchidos com inteiros pseudoaleatórios uniformemente distribuídos no intervalo $[0, 10n)$, gerados pela função \texttt{rand.Intn} da biblioteca padrão da linguagem. Cada experimento foi repetido múltiplas vezes, de modo a reduzir o impacto de variações no ambiente de execução e permitir uma análise estatística confiável dos tempos de execução observados.
 
 \section{Fundamentação Teórica}
 
-\subsection{Problema de Ordenação}
+\subsection{Algoritmos de Ordenação}
 
-Em \cite{cormen:2022}, o problema da ordenação propõe: dada uma sequência de $n$ números $(a_1, a_2, \ldots, a_n)$, o objetivo é produzir uma permutação $(a'_1, a'_2, \ldots, a'_n)$ tal que:
+Em \cite{cormen:2022}, o problema da ordenação propõe que: dada uma sequência de $n$ elementos $(a_1, a_2, \ldots, a_n)$, o objetivo é produzir uma permutação $(a'_1, a'_2, \ldots, a'_n)$ tal que:
 
 \[
 a'_1 \leq a'_2 \leq \ldots \leq a'_n
 \]
 
-A ordenação eficiente é essencial em diversos contextos, incluindo bancos de dados, análise de dados e algoritmos de busca e otimização. A ordenação é um dos mais fundamentais problemas em ciência da computação. 
-
-\subsection{Algoritmos de Ordenação}
-
-Para comparação, os algoritmos escolhidos são: \textit{Bubble Sort}, \textit{Merge Sort} e \textit{Quick Sort}. Cada qual apresenta diferentes estratégias de ordenação e, consequentemente, diferentes complexidades assintóticas conforme visto na Tabela~\ref{tab:algoritmos_ordenacao}:
+Para essa análise, os algoritmos escolhidos são: \textit{Bubble Sort}, \textit{Merge Sort} e \textit{Quick Sort}. Cada qual apresenta diferentes estratégias de ordenação e, consequentemente, diferentes complexidades assintóticas conforme visto na Tabela~\ref{tab:algoritmos_ordenacao}:
 
 \begin{table}[h!]
 \centering
