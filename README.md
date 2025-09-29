@@ -8,9 +8,9 @@ To regenerate results, execute:
 chmod +x ./compute.sh && ./compute.sh
 ```
 
-Results are kept under [results](`./results`) folder.
+Results are kept under [results](./results) folder.
 
-The final paper LaTeX code can be view under [paper](`./paper`) folder.
+The final paper LaTeX code can be view under [paper](./paper) folder.
 
-Finally, analysis results are generated on [analysis.ipynb](`./analysis.ipynb`) file.
+Finally, analysis results are generated on [analysis.ipynb](./analysis.ipynb) file.
 
