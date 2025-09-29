@@ -1,0 +1,208 @@
+\documentclass[12pt]{article}
+
+\usepackage{sbc-template}
+\usepackage{graphicx,url}
+\usepackage[utf8]{inputenc}
+
+\sloppy
+
+\title{Análise Experimental Comparativa de Algoritmos de Ordenação: Bubble Sort, Merge Sort e Quick Sort}
+
+\author{João V. Rodrigues\inst{1}, Lemuel K. M. de Liz\inst{1}, Lucas S. Gustzaki\inst{1}}
+
+\address{
+  Departamento de Sistemas e Computação\\
+  Universidade Regional de Blumenal (FURB) -- Blumenau, SC -- Brazil
+  \email{\{jvrodrigues,lkmliz,lgustzaki\}@furb.br}
+}
+
+\begin{document} 
+
+\maketitle
+
+\begin{abstract}
+This study aims to empirically evaluate the behavior of three classical sorting algorithms --- Bubble Sort, Merge Sort, and Quick Sort. To this end, systematic experiments were conducted in the Go programming language, with execution time measurements performed on datasets of 1,000, 10,000, and 100,000 elements, each consisting of randomly generated slices. The results confirm the practical limitation of Bubble Sort, whose quadratic cost (O($n^2$)) makes it infeasible for inputs larger than 10,000 elements. In contrast, Merge Sort and Quick Sort exhibited performance consistent with O($n \log n$), with Quick Sort achieving average execution times approximately 50\% lower than those of Merge Sort. This discussion highlights the importance of experimental analysis in the selection of sorting algorithms, providing valuable information for implementation decisions in real-world applications.
+\end{abstract}
+     
+\begin{resumo} 
+Este trabalho tem como objetivo avaliar empiricamente o comportamento de três algoritmos clássicos de ordenação --- \textit{Bubble Sort}, \textit{Merge Sort} e \textit{Quick Sort}. Para isso, foram conduzidos experimentos sistemáticos na linguagem Go, com medições de tempo de execução sobre conjuntos de 1.000, 10.000 e 100.000 elementos, compostos por números inteiros de tamanho fixo gerados aleatoriamente. Os resultados confirmam a limitação prática do \textit{Bubble Sort}, cujo custo quadrático (O($n^2$)) o torna inviável para entradas superiores a 10.000 elementos. Em contrapartida, \textit{Merge Sort} e \textit{Quick Sort} exibiram desempenho compatível com O($n \log n$), destacando-se o \textit{Quick Sort}, que obteve tempo médio aproximadamente 50\% inferior ao do \textit{Merge Sort}. A discussão reforça a relevância de análises experimentais na escolha de algoritmos de ordenação, fornecendo subsídios para decisões de implementação em aplicações reais.
+\end{resumo}
+
+\section{Introdução}
+
+O problema de ordenação é, considerado por muitos cientistas da computação, como o problema mais fundamental no estudo de algoritmos: A ordenação eficiente de conjuntos de dados é essencial em diversos contextos, até mesmo sendo a base para outros algoritmos .
+
+Neste trabalho, analisamos comparativamente três algoritmos clássicos: Bubble Sort, um algoritmo de comparação simples, cuja complexidade temporal no pior caso é $O(n^2)$; Merge Sort, um algoritmo baseado na estratégia de divisão e conquista, com desempenho garantido de $O(n \log n)$ em todos os casos; e Quick Sort, também baseado em divisão e conquista, que apresenta tempo médio de execução $O(n \log n)$, embora em casos degenerados possa alcançar $O(n^2)$.
+
+A metodologia adotada consistiu na implementação clássica dos três algoritmos na linguagem Go \cite{golang} --- utilizando iteração recursiva para Merge Sort e Bubble Sort --- e execução de benchmarks controlados. As entradas utilizadas foram vetores de $n$ elementos, preenchidos com inteiros pseudoaleatórios uniformemente distribuídos no intervalo $[0, 10n)$, gerados pela função \texttt{rand.Intn} da biblioteca padrão da linguagem. Cada experimento foi repetido múltiplas vezes, de modo a reduzir o impacto de variações no ambiente de execução e permitir uma análise estatística confiável dos tempos de execução observados.
+
+\section{Fundamentação Teórica}
+
+\subsection{Problema de Ordenação}
+
+Em \cite{cormen:2022}, o problema da ordenação propõe: dada uma sequência de $n$ números $(a_1, a_2, \ldots, a_n)$, o objetivo é produzir uma permutação $(a'_1, a'_2, \ldots, a'_n)$ tal que:
+
+\[
+a'_1 \leq a'_2 \leq \ldots \leq a'_n
+\]
+
+A ordenação eficiente é essencial em diversos contextos, incluindo bancos de dados, análise de dados e algoritmos de busca e otimização. A ordenação é um dos mais fundamentais problemas em ciência da computação. 
+
+\subsection{Algoritmos de Ordenação}
+
+Para comparação, os algoritmos escolhidos são: \textit{Bubble Sort}, \textit{Merge Sort} e \textit{Quick Sort}. Cada qual apresenta diferentes estratégias de ordenação e, consequentemente, diferentes complexidades assintóticas conforme visto na Tabela~\ref{tab:algoritmos_ordenacao}:
+
+\begin{table}[h!]
+\centering
+\caption{Comparação assintótica}
+\label{tab:algoritmos_ordenacao}
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+\textbf{Algoritmo} & \textbf{Melhor caso} & \textbf{Caso médio} & \textbf{Pior caso} & \textbf{Complexidade espacial} \\ \hline
+Bubble Sort & $O(n)$ & $O(n^2)$ & $O(n^2)$ & $O(1)$ \\ \hline
+Merge Sort & $O(n \log n)$ & $O(n \log n)$ & $O(n \log n)$ & $O(n)$ \\ \hline
+Quick Sort & $O(n \log n)$ & $O(n \log n)$ & $O(n^2)$ & $O(\log n)$ \\ \hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Bubble Sort}
+
+O algoritmo \textit{Bubble Sort} é baseado em \textbf{trocas adjacentes}, percorrendo repetidamente o vetor e comparando pares de elementos consecutivos, realizando trocas sempre que estiverem na ordem incorreta. O processo continua até que nenhuma troca seja necessária.
+
+\textbf{Complexidade temporal:}
+\begin{itemize}
+    \item Melhor caso: $O(n)$ -- quando o vetor já está ordenado.
+    \item Caso médio: $O(n^2)$
+    \item Pior caso: $O(n^2)$ -- quando o vetor está inversamente ordenado.
+\end{itemize}
+
+\textbf{Complexidade espacial:} $O(1)$ -- ordenação \textit{in-place}.
+
+\subsubsection{Merge Sort}
+
+O algoritmo \textit{Merge Sort} utiliza o paradigma de \textbf{divisão e conquista}. O algoritmo divide recursivamente o vetor em subvetores menores, ordena cada subvetor e combina os subvetores ordenados para formar o vetor final.
+
+\textbf{Complexidade temporal:}
+\begin{itemize}
+    \item Melhor caso: $O(n \log n)$
+    \item Caso médio: $O(n \log n)$
+    \item Pior caso: $O(n \log n)$
+\end{itemize}
+
+\textbf{Complexidade espacial:} $O(n)$ -- devido ao vetor auxiliar usado no processo de \textit{merge}.
+
+\subsubsection{Quick Sort}
+
+O algoritmo \textit{Quick Sort} também segue a estratégia de \textbf{divisão e conquista}, selecionando um elemento pivô e particionando o vetor em elementos menores e maiores que o pivô. Em seguida, aplica-se recursivamente às partições.
+
+\textbf{Complexidade temporal:}
+\begin{itemize}
+    \item Melhor caso: $O(n \log n)$
+    \item Caso médio: $O(n \log n)$
+    \item Pior caso: $O(n^2)$ -- quando a escolha do pivô é inadequada.
+\end{itemize}
+
+\textbf{Complexidade espacial:} $O(\log n)$ -- devido à pilha de chamadas recursivas.
+
+\subsection{Considerações}
+
+Para a análise experimental, os vetores de $n$ elementos ($n \in \{1000, 10.000, 100.000\}$) foram gerados de forma aleatória utilizando números inteiros uniformemente distribuídos no intervalo $[0, 10n)$. Essa escolha garante diversidade nos testes, permitindo avaliar o desempenho dos algoritmos em condições controladas e comparáveis.
+
+\section{Metodologia}
+
+A análise experimental consiste na avaliação do desempenho de algoritmos por meio de experimentos controlados, complementando a análise teórica. Os experimentos foram conduzidos em condições definidas de hardware e software, utilizando vetores de diferentes tamanhos e valores gerados aleatoriamente, com múltiplas execuções para garantir a confiabilidade estatística dos resultados. 
+
+Esta abordagem permite mensurar o desempenho real dos algoritmos, considerando fatores como implementação, overhead da linguagem, cache do processador e características do hardware, fornecendo subsídios objetivos para a escolha do algoritmo mais eficiente em cenários práticos.
+
+Por fim, é igualmente importante ressaltar que o tempo para gerar os datasets de entrada também foi contabilizado no tempo total de execução do benchmark para cada algoritmo.
+
+\subsection{Ambiente Computacional}
+
+Os experimentos foram conduzidos em um ambiente controlado, com os seguintes parâmetros:
+
+\begin{itemize}
+    \item \textbf{Linguagem de programação:} Go 1.22.2
+    \item \textbf{Processador:} Intel(R) Core(TM) Ultra 5 135U @ 1.60 GHz, 14 núcleos disponíveis no WSL
+    \item \textbf{Memória RAM:} 32 GB LDDR5 física (16 GB disponíveis para WSL)
+    \item \textbf{Sistema operacional:} Windows 10 (versão 10.0.22631.5909) com WSL 2.6.1.0
+    \item \textbf{Kernel WSL:} 6.6.87.2-1
+    \item \textbf{WSLg:} 1.0.66
+    \item \textbf{MSRDC:} 1.2.6353
+    \item \textbf{Direct3D:} 1.611.1-81528511
+    \item \textbf{DXCore:} 10.0.26100.1-240331-1435.ge-release
+\end{itemize}
+
+\subsection{Entrada de Dados}
+
+Para a análise experimental, foram utilizados vetores de $n$ elementos, com $n \in \{1.000, 10.000, 100.000\}$. Cada vetor consistiu em inteiros pseudoaleatórios uniformemente distribuídos no intervalo $[0, 10n)$.
+
+\subsection{Procedimento Experimental}
+
+A metodologia, portanto, se reduz em: 1) Geração de vetores aleatórios; 2) Execução dos benchmarks em cada algoritmo, utilizando a biblioteca padrão \texttt{testing} da linguagem Go para medir o tempo de execução; 3) Registro manual dos tempos obtidos e exportação dos resultados em CSV, para análise posterior.
+
+\section{Resultados}
+
+Os resultados --- apresentados na Tabela~\ref{tab:estatisticas_ms} --- foram arredondados para duas casas decimais para facilitar a leitura neste documento. Todos os tempos de execução foram originalmente obtidos em nanosegundos ($10^{-9}$ s) e posteriormente convertidos para milissegundos ($10^{-3}$ s).
+
+\begin{table}[h!]
+\centering
+\caption{Análise estatística}
+\label{tab:estatisticas_ms}
+\begin{tabular}{|l|c|c|c|c|c|c|}
+\hline
+\textbf{Algoritmo} & \textbf{$n$ elementos} & \textbf{Média} & \textbf{DP} & \textbf{CV} & \textbf{Mín.} & \textbf{Máx.} \\ \hline
+Bubble Sort & 1.000 & 0.93 & 0.04 & 0.04 & 0.86 & 0.99 \\ 
+Bubble Sort & 10.000 & 92.39 & 5.26 & 0.06 & 83.77 & 101.42 \\ 
+Bubble Sort & 100.000 & 17953.02 & 1031.29 & 0.06 & 16806.37 & 19440.39 \\ \hline
+Merge Sort & 1.000 & 0.12 & 0.00 & 0.02 & 0.12 & 0.13 \\ 
+Merge Sort & 10.000 & 1.50 & 0.04 & 0.02 & 1.46 & 1.58 \\ 
+Merge Sort & 100.000 & 19.48 & 0.30 & 0.02 & 19.19 & 20.14 \\ \hline
+Quick Sort & 1.000 & 0.08 & 0.00 & 0.03 & 0.08 & 0.08 \\ 
+Quick Sort & 10.000 & 0.84 & 0.02 & 0.02 & 0.82 & 0.87 \\ 
+Quick Sort & 100.000 & 9.91 & 0.20 & 0.02 & 9.68 & 10.31 \\ \hline
+\end{tabular}
+\end{table}
+
+\section{Discussão}
+
+\textit{Bubble Sort} apresenta crescimento extremamente rápido do tempo de execução com o aumento do tamanho do vetor, de 0,93 ms para $n=1.000$ até 17.953,02 ms para $n=100.000$, confirmando seu comportamento quadrático assintótico $O(n^2)$. Em contraste, \textit{Merge Sort} e \textit{Quick Sort} apresentam escalabilidade compatível com $O(n \log n)$, permanecendo eficientes mesmo para o maior conjunto de dados testado.\textit{Quick Sort} mostrou desempenho superior ao \textit{Merge Sort}, sendo aproximadamente duas vezes mais rápido para $n=100.000$,
+
+O desempenho superior do \textit{Quick Sort} em relação ao \textit{Merge Sort} pode ser explicado por fatores de memória e acesso à cache do processador \cite{prado:2005}, evitando acessos repetidos à RAM, que é mais lenta. No \textit{Quick Sort}, a maioria das operações é realizada \textit{in-place}, ou seja, dentro do próprio vetor original, percorrendo regiões contíguas de memória, o que permite um melhor aproveitamento do cache. Em contraste, o \textit{Merge Sort} cria vetores auxiliares a cada operação de merge, acessando posições de memória não contíguas, resultando em maior número de \textit{cache misses}.
+
+Além disso, a sobrecarga de memória do \textit{Merge Sort} é maior, pois cada chamada recursiva aloca vetores auxiliares de tamanho proporcional à entrada ($O(n)$), enquanto o \textit{Quick Sort} utiliza apenas a pilha de chamadas recursivas ($O(\log n)$ em média). Essa combinação de menor consumo de memória e maior eficiência no acesso à cache contribui para que o \textit{Quick Sort} apresente tempos de execução mais rápidos na prática, mesmo que ambos os algoritmos tenham complexidade média teórica $O(n \log n)$.
+
+A análise de variabilidade conclue que (\textit{Merge Sort} e \textit{Quick Sort}) apresentam resultados estáveis, com coeficientes de variação abaixo de 3\%, enquanto o \textit{Bubble Sort} apresenta maior variação. Além disso, a comparação de tempos mínimos e máximos confirma que o \textit{Bubble Sort} é muito sensível ao tamanho do vetor, enquanto \textit{Merge Sort} e \textit{Quick Sort} mantêm uma execução previsível.
+
+\section{Conclusão}
+
+\begin{table}[h!]
+\centering
+\caption{Comparação cruzada}
+\label{tab:comparacao_cruzada}
+\begin{tabular}{|c|c|c|c|}
+
+\hline
+\textbf{$n$ elementos} & \textbf{Bubble Sort} & \textbf{Merge Sort} & \textbf{Quick Sort} \\ \hline
+\multicolumn{4}{|c|}{$n = 1.000$} \\ \hline
+Bubble Sort & - & 86.8\% & 91.7\% \\ 
+Merge Sort & -86.8\% & - & 36.9\% \\ 
+Quick Sort & -91.7\% & -36.9\% & - \\ \hline
+\multicolumn{4}{|c|}{$n = 10.000$} \\ \hline
+Bubble Sort & - & 98.4\% & 99.1\% \\ 
+Merge Sort & -98.4\% & - & 44.0\%- \\ 
+Quick Sort & -99.1\% & -44.0\% & - \\ \hline
+\multicolumn{4}{|c|}{$n = 100.000$} \\ \hline
+Bubble Sort & - & 99.9\% & 99.9\% \\ 
+Merge Sort & -99.9\% & - & 49.1\% \\ 
+Quick Sort & -99.9\% & -49.1\% & - \\ \hline
+\end{tabular}
+\end{table}
+
+A Tabela~\ref{tab:comparacao_cruzada} apresenta a redução percentual de tempo médio de execução de cada algoritmo em relação aos outros, considerando a média em milissegundos. Cada célula indica o quanto o algoritmo da coluna é mais rápido (em termos de tempo de execução em milisegundos) em comparação com o algoritmo da linha.
+
+Este trabalho apresentou uma análise experimental abrangente de três algoritmos de ordenação fundamentais. Os resultados demonstram que o Quick Sort emergiu como o algoritmo mais eficiente em termos de tempo de execução nos testes realizados, apresentando desempenho aproximadamente 49\% superior ao Merge Sort em média. Entretanto, a escolha entre Merge Sort e Quick Sort deve considerar requisitos específicos da aplicação, como a necessidade de estabilidade ou tolerância ao pior cenário. Tais resultados obtidos fornecem uma base empírica sólida para a seleção de algoritmos de ordenação em aplicações práticas, complementando a análise teórica tradicional com dados de desempenho real.
+
+\bibliographystyle{sbc}
+\bibliography{sbc-template}
+
+\end{document}
