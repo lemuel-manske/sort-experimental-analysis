@@ -6,7 +6,7 @@
 
 \sloppy
 
-\title{Análise Experimental Comparativa de Algoritmos de Ordenação: Bubble Sort, Merge Sort e Quick Sort}
+\title{Análise Assintótica e Experimental Comparativa de Algoritmos de Ordenação: Bubble Sort, Merge Sort e Quick Sort}
 
 \author{João V. Rodrigues\inst{1}, Lemuel K. M. de Liz\inst{1}, Lucas S. Gustzaki\inst{1}}
 
@@ -21,20 +21,22 @@
 \maketitle
 
 \begin{abstract}
-This study aims to empirically evaluate the behavior of three classical sorting algorithms --- Bubble Sort, Merge Sort, and Quick Sort. To this end, systematic experiments were conducted in the Go programming language, with execution time measurements performed on datasets of 1,000, 10,000, and 100,000 elements, each consisting of randomly generated slices. The results confirm the practical limitation of Bubble Sort, whose quadratic cost (O($n^2$)) makes it infeasible for inputs larger than 10,000 elements. In contrast, Merge Sort and Quick Sort exhibited performance consistent with O($n \log n$), with Quick Sort achieving average execution times approximately 50\% lower than those of Merge Sort. This discussion highlights the importance of experimental analysis in the selection of sorting algorithms, providing valuable information for implementation decisions in real-world applications.
+This study aims to evaluate the behavior of three classical sorting algorithms --- Bubble Sort, Merge Sort, and Quick Sort --- through asymptotic and experimental analysis. Asymptotic analysis demonstrates the theoretical complexity of each algorithm, identifying best and worst-case scenarios. Systematic experiments were conducted in the Go programming language, with execution time measurements performed on datasets of 1,000, 10,000, and 100,000 elements. The results confirm convergence between theoretical and practical analysis: Bubble Sort exhibits quadratic behavior O($n^2$), becoming infeasible for large inputs, while Merge Sort and Quick Sort maintain O($n \log n$) performance, with Quick Sort achieving execution times approximately 50\% lower. This study highlights the complementary nature of asymptotic and experimental analyses in algorithm selection for real-world applications.
 \end{abstract}
      
 \begin{resumo} 
-Este trabalho tem como objetivo avaliar empiricamente o comportamento de três algoritmos clássicos de ordenação --- \textit{Bubble Sort}, \textit{Merge Sort} e \textit{Quick Sort}. Para isso, foram conduzidos experimentos sistemáticos na linguagem Go, com medições de tempo de execução sobre conjuntos de 1.000, 10.000 e 100.000 elementos, compostos por números inteiros de tamanho fixo gerados aleatoriamente. Os resultados confirmam a limitação prática do \textit{Bubble Sort}, cujo custo quadrático (O($n^2$)) o torna inviável para entradas superiores a 10.000 elementos. Em contrapartida, \textit{Merge Sort} e \textit{Quick Sort} exibiram desempenho compatível com O($n \log n$), destacando-se o \textit{Quick Sort}, que obteve tempo médio aproximadamente 50\% inferior ao do \textit{Merge Sort}. A discussão reforça a relevância de análises experimentais na escolha de algoritmos de ordenação, fornecendo subsídios para decisões de implementação em aplicações reais.
+Este trabalho tem como objetivo avaliar o comportamento de três algoritmos clássicos de ordenação --- \textit{Bubble Sort}, \textit{Merge Sort} e \textit{Quick Sort} --- por meio de análise assintótica e experimental. A análise assintótica demonstra a complexidade teórica de cada algoritmo, identificando melhor e pior caso. Experimentos sistemáticos foram conduzidos na linguagem Go, com medições de tempo de execução sobre conjuntos de 1.000, 10.000 e 100.000 elementos. Os resultados confirmam a convergência entre análise teórica e prática: o \textit{Bubble Sort} apresenta comportamento quadrático O($n^2$), tornando-se inviável para entradas grandes, enquanto \textit{Merge Sort} e \textit{Quick Sort} mantêm desempenho O($n \log n$), destacando-se o \textit{Quick Sort} com tempo médio aproximadamente 50\% inferior. O estudo reforça a complementaridade entre análises assintótica e experimental na escolha de algoritmos de ordenação para aplicações reais.
 \end{resumo}
 
 \section{Introdução}
 
-O problema de ordenação é, considerado por muitos cientistas da computação, como o problema mais fundamental no estudo de algoritmos: A ordenação eficiente de conjuntos de dados é essencial em diversos contextos, sendo até mesmo a base para o desenvolvimento de outros algoritmos.
+O problema de ordenação é considerado por muitos cientistas da computação como o problema mais fundamental no estudo de algoritmos: a ordenação eficiente de conjuntos de dados é essencial em diversos contextos, sendo até mesmo a base para o desenvolvimento de outros algoritmos.
 
-Neste trabalho, foi realizada a análise comparativa de três algoritmos de ordenação clássicos: Bubble Sort, um algoritmo de comparação simples, cuja complexidade temporal no pior caso é $O(n^2)$; Merge Sort, um algoritmo baseado na estratégia de divisão e conquista, com desempenho garantido de $O(n \log n)$ em todos os casos; e Quick Sort, também baseado em divisão e conquista, que apresenta tempo médio de execução $O(n \log n)$, embora em casos degenerados possa alcançar $O(n^2)$.
+Neste trabalho, foi realizada a análise comparativa --- assintótica e experimental --- de três algoritmos de ordenação clássicos: Bubble Sort, um algoritmo de comparação simples, cuja complexidade temporal no pior caso é $O(n^2)$; Merge Sort, um algoritmo baseado na estratégia de divisão e conquista, com desempenho garantido de $O(n \log n)$ em todos os casos; e Quick Sort, também baseado em divisão e conquista, que apresenta tempo médio de execução $O(n \log n)$, embora em casos degenerados possa alcançar $O(n^2)$.
 
-A metodologia adotada consistiu na implementação clássica dos três algoritmos na linguagem Go \cite{golang} --- utilizando iteração recursiva para Merge Sort e Quick Sort --- e execução de benchmarks controlados. As entradas utilizadas foram vetores de $n$ elementos, preenchidos com inteiros pseudoaleatórios uniformemente distribuídos no intervalo $[0, 10n)$, gerados pela função \texttt{rand.Intn} da biblioteca padrão da linguagem. Cada experimento foi repetido múltiplas vezes, de modo a reduzir o impacto de variações no ambiente de execução e permitir uma análise estatística confiável dos tempos de execução observados.
+A metodologia adotada consistiu em duas frentes complementares: (1) análise assintótica formal, considerando operações elementares como unidades de tempo e identificando melhor e pior caso para cada algoritmo; (2) implementação clássica dos três algoritmos na linguagem Go \cite{golang} --- utilizando iteração recursiva para Merge Sort e Quick Sort --- e execução de benchmarks controlados. As entradas utilizadas foram vetores de $n$ elementos, preenchidos com inteiros pseudoaleatórios uniformemente distribuídos no intervalo $[0, 10n)$, gerados pela função \texttt{rand.Intn} da biblioteca padrão da linguagem. Cada experimento foi repetido múltiplas vezes, de modo a reduzir o impacto de variações no ambiente de execução e permitir uma análise estatística confiável dos tempos de execução observados.
+
+O código-fonte completo das implementações e os dados experimentais coletados estão disponíveis no repositório GitHub: \url{https://github.com/lemuel-manske/sort-experimental-analysis}.
 
 \section{Fundamentação Teórica}
 
@@ -104,6 +106,158 @@ O algoritmo \textit{Quick Sort} também segue a estratégia de \textbf{divisão 
 
 Para a análise experimental, os vetores de $n$ elementos ($n \in \{1000, 10.000, 100.000\}$) foram gerados de forma aleatória utilizando números inteiros uniformemente distribuídos no intervalo $[0, 10n)$. Essa escolha garante diversidade nos testes, permitindo avaliar o desempenho dos algoritmos em condições controladas e comparáveis.
 
+\section{Análise Assintótica}
+
+A análise assintótica permite determinar a complexidade temporal dos algoritmos de forma independente da implementação ou hardware, considerando apenas o crescimento do número de operações em função do tamanho da entrada $n$. Nesta seção, cada instrução básica (atribuição, comparação, operação aritmética) é considerada como uma unidade de tempo. A análise considera as implementações específicas em Go desenvolvidas para este trabalho.
+
+\subsection{Bubble Sort}
+
+A implementação em Go utiliza dois laços aninhados com otimização de flag \texttt{swapped} para detectar quando o vetor já está ordenado, permitindo interrupção antecipada.
+
+\subsubsection{Pior Caso: O($n^2$)}
+
+O pior caso ocorre quando o vetor está em ordem decrescente, exigindo o máximo de trocas. O algoritmo realiza $n-1$ iterações no laço externo (\texttt{for i := 0; i < n-1; i++}), e em cada iteração $i$ executa $n-i-1$ comparações no laço interno (\texttt{for j := 0; j < n-i-1; j++}).
+
+\textbf{Entrada do pior caso:} Vetor ordenado em ordem decrescente, por exemplo: $[n, n-1, n-2, \ldots, 2, 1]$.
+
+\textbf{Análise detalhada:} Para cada iteração $i$ do laço externo:
+\begin{itemize}
+    \item Atribuição \texttt{swapped := false}: 1 operação
+    \item Laço interno com $n-i-1$ iterações, cada uma executando:
+    \begin{itemize}
+        \item Comparação \texttt{arr[j] > arr[j+1]}: 1 operação
+        \item Troca (pior caso): 3 operações (swap)
+        \item Atribuição \texttt{swapped = true}: 1 operação
+    \end{itemize}
+    \item Verificação \texttt{if !swapped}: 1 operação
+\end{itemize}
+
+Número total de comparações:
+\[
+\sum_{i=0}^{n-2} (n-i-1) = \sum_{j=1}^{n-1} j = \frac{(n-1)n}{2} = \frac{n^2 - n}{2}
+\]
+
+Considerando as trocas (3 operações × $\frac{n^2-n}{2}$) e operações auxiliares, a complexidade total é:
+\[
+T(n) = \frac{n^2 - n}{2} + 3 \cdot \frac{n^2 - n}{2} + O(n) = 2(n^2 - n) + O(n) = O(n^2)
+\]
+
+\subsubsection{Melhor Caso: O($n$)}
+
+O melhor caso ocorre quando o vetor já está ordenado. A flag \texttt{swapped} permanece \texttt{false} na primeira iteração, causando \texttt{break} imediato.
+
+\textbf{Entrada do melhor caso:} Vetor já ordenado, por exemplo: $[1, 2, 3, \ldots, n-1, n]$.
+
+\textbf{Análise:} Apenas uma iteração do laço externo com $n-1$ comparações no laço interno e nenhuma troca:
+\[
+T(n) = 1 + (n-1) + 1 = n + 1 = O(n)
+\]
+
+\subsection{Merge Sort}
+
+A implementação em Go utiliza recursão com criação de novos slices em cada divisão. A função \texttt{merge} intercala dois slices ordenados usando um slice auxiliar \texttt{result}.
+
+\subsubsection{Todos os Casos: O($n \log n$)}
+
+O Merge Sort divide recursivamente o vetor ao meio (\texttt{mid := len(arr) / 2}) até atingir casos base (\texttt{len(arr) <= 1}), e depois intercala os subvetores ordenados. A complexidade é a mesma em todos os casos.
+
+\textbf{Análise detalhada da função merge:}
+\begin{itemize}
+    \item Criação do slice resultado: \texttt{make([]int, 0, len(left)+len(right))}: O(1)
+    \item Laço de intercalação: percorre todos os $n$ elementos uma vez
+    \begin{itemize}
+        \item Comparação \texttt{left[i] < right[j]}: 1 operação
+        \item Append ao resultado: O(1) amortizado
+    \end{itemize}
+    \item Append dos elementos restantes: O(k), onde k são os elementos não processados
+\end{itemize}
+
+Custo total da função merge: $T_{merge}(n) = n + O(1) = O(n)$
+
+\textbf{Análise da recursão:} A relação de recorrência é dada por:
+\[
+T(n) = 2T\left(\frac{n}{2}\right) + O(n)
+\]
+
+onde $2T(n/2)$ representa as duas chamadas recursivas (\texttt{MergeSort(arr[:mid])} e \texttt{MergeSort(arr[mid:])}) e $O(n)$ representa o custo da função \texttt{merge}. Pelo Teorema Mestre (caso 2), temos:
+\[
+T(n) = O(n \log n)
+\]
+
+\textbf{Detalhamento:} Considerando que há $\log_2 n$ níveis de recursão (cada nível divide por 2) e cada nível processa $n$ elementos no total através das operações de merge:
+\[
+T(n) = n \cdot \log_2 n + O(n) = O(n \log n)
+\]
+
+\textbf{Melhor e pior caso:} Ambos são O($n \log n$), pois o algoritmo sempre divide o vetor ao meio (\texttt{mid := len(arr) / 2}) independentemente da configuração dos dados. A estrutura de divisão é determinística.
+
+\textbf{Entrada do melhor caso:} Qualquer configuração (ex: $[1, 2, 3, \ldots, n]$).
+
+\textbf{Entrada do pior caso:} Qualquer configuração (ex: $[n, n-1, \ldots, 1]$).
+
+\subsection{Quick Sort}
+
+A implementação em Go utiliza recursão \textit{in-place} com pivô determinístico escolhido como elemento central (\texttt{pivotIndex := len(arr) / 2}). O pivô é movido para o final e o particionamento é feito com um único laço.
+
+\subsubsection{Análise do Particionamento}
+
+A fase de particionamento percorre todo o vetor com um laço \texttt{for i := range arr}:
+\begin{itemize}
+    \item Movimentação do pivô para o final: \texttt{arr[pivotIndex], arr[right] = arr[right], arr[pivotIndex]}: 3 operações
+    \item Laço de particionamento com $n$ iterações:
+    \begin{itemize}
+        \item Comparação \texttt{arr[i] < arr[right]}: 1 operação
+        \item Troca condicional: 3 operações (quando executada)
+        \item Incremento de \texttt{left}: 1 operação (quando executada)
+    \end{itemize}
+    \item Posicionamento final do pivô: 3 operações
+\end{itemize}
+
+Custo do particionamento: $T_{partition}(n) = 3 + n + 3 = n + 6 = O(n)$
+
+\subsubsection{Pior Caso: O($n^2$)}
+
+O pior caso ocorre quando o pivô escolhido (elemento central) consistentemente divide o vetor de forma desbalanceada, resultando em uma partição com $n-1$ elementos e outra com 0 elementos.
+
+\textbf{Entrada do pior caso:} Para a implementação com pivô central (\texttt{len(arr) / 2}), vetores já ordenados ou com estrutura específica que sempre fazem o elemento central ser extremo após particionamento. Exemplo: vetor onde o elemento central é sempre o menor ou maior, como $[1, 3, 2, 5, 4, 7, 6, \ldots]$ (padrão específico).
+
+\textbf{Análise:} Se cada particionamento resulta em divisão $(n-1, 0)$, a relação de recorrência é:
+\[
+T(n) = T(n-1) + T(0) + O(n) = T(n-1) + O(n)
+\]
+
+Expandindo a recorrência:
+\[
+T(n) = n + (n-1) + (n-2) + \ldots + 1 = \sum_{i=1}^{n} i = \frac{n(n+1)}{2} = O(n^2)
+\]
+
+\subsubsection{Melhor Caso: O($n \log n$)}
+
+O melhor caso ocorre quando o pivô central consistentemente divide o vetor em duas partições de tamanhos aproximadamente iguais (ou próximos).
+
+\textbf{Entrada do melhor caso:} Vetores onde o elemento central é sempre próximo à mediana, resultando em divisões balanceadas. Exemplo: $[2, 1, 3, 4, 5]$ ou outras configurações onde \texttt{arr[len(arr)/2]} tende a estar no meio da distribuição dos valores.
+
+\textbf{Análise:} Com divisões balanceadas, a relação de recorrência é:
+\[
+T(n) = 2T\left(\frac{n}{2}\right) + O(n)
+\]
+
+onde as duas chamadas recursivas (\texttt{QuickSort(arr[:left])} e \texttt{QuickSort(arr[left+1:])}) operam sobre partições de tamanho aproximadamente $n/2$. Pelo Teorema Mestre (caso 2):
+\[
+T(n) = O(n \log n)
+\]
+
+\subsubsection{Caso Médio: O($n \log n$)}
+
+Com dados aleatórios, a escolha do pivô central (\texttt{len(arr) / 2}) tende a produzir divisões razoavelmente balanceadas na maioria das chamadas recursivas. Mesmo divisões não perfeitamente balanceadas (ex: proporção 3:1) ainda resultam em $O(n \log n)$.
+
+\textbf{Análise:} Assumindo divisões que mantêm proporção constante $\alpha:(1-\alpha)$ onde $0 < \alpha < 1$, a profundidade da árvore de recursão permanece $O(\log n)$, e como cada nível processa $O(n)$ elementos total, temos:
+\[
+T(n) = O(n \log n)
+\]
+
+Este é o comportamento esperado para as entradas aleatórias utilizadas nos experimentos ($[0, 10n)$ uniformemente distribuídas).
+
 \section{Metodologia}
 
 A análise experimental consiste na avaliação do desempenho de algoritmos por meio de experimentos controlados, complementando a análise teórica. Os experimentos foram conduzidos em condições definidas de hardware e software, utilizando vetores de diferentes tamanhos e valores gerados aleatoriamente, com múltiplas execuções para garantir a confiabilidade estatística dos resultados. 
@@ -136,9 +290,50 @@ Para a análise experimental, foram utilizados vetores de $n$ elementos, com $n 
 
 A metodologia, portanto, se reduz em: 1) Geração de vetores aleatórios; 2) Execução dos benchmarks em cada algoritmo, utilizando a biblioteca padrão \texttt{testing} da linguagem Go para medir o tempo de execução; 3) Registro manual dos tempos obtidos e exportação dos resultados em CSV, para análise posterior.
 
+\subsection{Detalhes de Implementação}
+
+As implementações seguem padrões clássicos com particularidades específicas da linguagem Go:
+
+\begin{itemize}
+    \item \textbf{Bubble Sort:} Implementação com flag \texttt{swapped} para detecção de ordenação completa, permitindo terminação antecipada no melhor caso.
+    \item \textbf{Merge Sort:} Implementação funcional que retorna novos slices a cada divisão, utilizando \texttt{append} para construir o resultado. Embora não seja estritamente \textit{in-place}, aproveita a eficiência do gerenciamento de slices do Go.
+    \item \textbf{Quick Sort:} Implementação recursiva \textit{in-place} com pivô determinístico (elemento central). O particionamento utiliza esquema de Lomuto modificado, percorrendo o vetor uma única vez.
+\end{itemize}
+
 \section{Resultados}
 
-Os resultados --- apresentados na Tabela~\ref{tab:estatisticas_ms} --- foram arredondados para duas casas decimais para facilitar a leitura neste documento. Todos os tempos de execução foram originalmente obtidos em nanosegundos ($10^{-9}$ s) e posteriormente convertidos para milissegundos ($10^{-3}$ s).
+\subsection{Resultados da Análise Assintótica}
+
+A análise assintótica formal, apresentada na Seção 3, estabeleceu as complexidades teóricas considerando as implementações específicas em Go. Os resultados estão resumidos na Tabela~\ref{tab:algoritmos_ordenacao} (seção 2.1) e detalhados a seguir:
+
+\begin{itemize}
+    \item \textbf{Bubble Sort:} A implementação com flag \texttt{swapped} apresenta:
+    \begin{itemize}
+        \item Melhor caso O($n$): quando o vetor está ordenado, a flag detecta na primeira iteração
+        \item Pior caso O($n^2$): vetor em ordem decrescente exige $(n^2-n)/2$ comparações e trocas
+        \item Caso médio O($n^2$): comportamento dominado pelo termo quadrático
+    \end{itemize}
+    
+    \item \textbf{Merge Sort:} A implementação recursiva com criação de slices mantém:
+    \begin{itemize}
+        \item Todos os casos O($n \log n$): divisão determinística ao meio garante $\log_2 n$ níveis
+        \item Custo de merge linear O($n$) em cada nível
+        \item Complexidade espacial O($n$) devido à alocação de slices auxiliares
+    \end{itemize}
+    
+    \item \textbf{Quick Sort:} A implementação com pivô central apresenta:
+    \begin{itemize}
+        \item Melhor caso O($n \log n$): quando o elemento central resulta em divisões balanceadas
+        \item Caso médio O($n \log n$): com dados aleatórios, partições tendem ao balanceamento
+        \item Pior caso O($n^2$): em casos raros onde o pivô central é sempre extremo
+    \end{itemize}
+\end{itemize}
+
+A análise teórica indica que, para as entradas aleatórias utilizadas nos experimentos (distribuição uniforme em $[0, 10n)$), Merge Sort e Quick Sort devem apresentar desempenho O($n \log n$), significativamente superior ao comportamento O($n^2$) do Bubble Sort, especialmente para valores grandes de $n$. A escolha do pivô central no Quick Sort favorece bom desempenho médio com dados aleatórios.
+
+\subsection{Resultados da Análise Experimental}
+
+Os resultados experimentais --- apresentados na Tabela~\ref{tab:estatisticas_ms} --- foram arredondados para duas casas decimais para facilitar a leitura neste documento. Todos os tempos de execução foram originalmente obtidos em nanosegundos ($10^{-9}$ s) e posteriormente convertidos para milissegundos ($10^{-3}$ s).
 
 \begin{table}[h!]
 \centering
@@ -161,13 +356,68 @@ Quick Sort & 100.000 & 9.91 & 0.20 & 0.02 & 9.68 & 10.31 \\ \hline
 
 \section{Discussão}
 
-\textit{Bubble Sort} apresenta crescimento extremamente rápido do tempo de execução com o aumento do tamanho do vetor, de 0,93 ms para $n=1.000$ até 17.953,02 ms para $n=100.000$, confirmando seu comportamento quadrático assintótico $O(n^2)$. Em contraste, \textit{Merge Sort} e \textit{Quick Sort} apresentam escalabilidade compatível com $O(n \log n)$, permanecendo eficientes mesmo para o maior conjunto de dados testado.\textit{Quick Sort} mostrou desempenho superior ao \textit{Merge Sort}, sendo aproximadamente duas vezes mais rápido para $n=100.000$,
+\subsection{Convergência entre Análise Assintótica e Experimental}
 
-O desempenho superior do \textit{Quick Sort} em relação ao \textit{Merge Sort} pode ser explicado por fatores de memória e acesso à cache do processador \cite{prado:2005}, evitando acessos repetidos à RAM, que é mais lenta. No \textit{Quick Sort}, a maioria das operações é realizada \textit{in-place}, ou seja, dentro do próprio vetor original, percorrendo regiões contíguas de memória, o que permite um melhor aproveitamento do cache. Em contraste, o \textit{Merge Sort} cria vetores auxiliares a cada operação de merge, acessando posições de memória não contíguas, resultando em maior número de \textit{cache misses}.
+A comparação entre as análises assintótica e experimental revela forte convergência entre os resultados teóricos e práticos. A análise assintótica previu comportamento O($n^2$) para o \textit{Bubble Sort} no caso médio, e os experimentos confirmaram esta previsão: o tempo de execução cresceu aproximadamente 100 vezes quando $n$ aumentou de 1.000 para 10.000 (fator de $10^2$), e novamente cerca de 194 vezes de 10.000 para 100.000 (próximo ao esperado $10^2$).
 
-Além disso, a sobrecarga de memória do \textit{Merge Sort} é maior, pois cada chamada recursiva aloca vetores auxiliares de tamanho proporcional à entrada ($O(n)$), enquanto o \textit{Quick Sort} utiliza apenas a pilha de chamadas recursivas ($O(\log n)$ em média). Essa combinação de menor consumo de memória e maior eficiência no acesso à cache contribui para que o \textit{Quick Sort} apresente tempos de execução mais rápidos na prática, mesmo que ambos os algoritmos tenham complexidade média teórica $O(n \log n)$.
+Para \textit{Merge Sort} e \textit{Quick Sort}, a análise assintótica previu O($n \log n$). Os dados experimentais validam esta complexidade: quando $n$ aumentou de 1.000 para 10.000 (fator 10), o tempo aumentou aproximadamente 12,5 vezes para Merge Sort e 10,5 vezes para Quick Sort, valores compatíveis com $10 \log_{2} 10 \approx 33,2$ considerando as constantes multiplicativas. De 10.000 para 100.000, os fatores foram aproximadamente 13 e 11,8, respectivamente, novamente coerentes com a previsão teórica.
 
-A análise de variabilidade conclue que (\textit{Merge Sort} e \textit{Quick Sort}) apresentam resultados estáveis, com coeficientes de variação abaixo de 3\%, enquanto o \textit{Bubble Sort} apresenta maior variação. Além disso, a comparação de tempos mínimos e máximos confirma que o \textit{Bubble Sort} é muito sensível ao tamanho do vetor, enquanto \textit{Merge Sort} e \textit{Quick Sort} mantêm uma execução previsível.
+\subsection{Análise de Desempenho Relativo}
+
+Embora \textit{Merge Sort} e \textit{Quick Sort} apresentem a mesma complexidade assintótica O($n \log n$) no caso médio, os experimentos revelaram que \textit{Quick Sort} é consistentemente mais rápido, com tempos de execução aproximadamente 50\% menores. Esta diferença, não capturada pela análise assintótica (que ignora constantes), pode ser explicada por fatores de implementação e arquitetura:
+
+\textbf{Localidade de memória e cache:} A implementação \textit{in-place} do \textit{Quick Sort} opera diretamente sobre o slice original, percorrendo regiões contíguas de memória, o que maximiza o aproveitamento do cache do processador \cite{prado:2005}. Em contraste, o \textit{Merge Sort} implementado aloca novos slices a cada chamada recursiva (\texttt{make([]int, 0, capacity)} na função merge), causando maior número de \textit{cache misses} e acessos à RAM, que é significativamente mais lenta.
+
+\textbf{Sobrecarga de alocação de memória:} A implementação do \textit{Merge Sort} possui complexidade espacial O($n$), alocando memória auxiliar a cada operação de merge. O Go precisa gerenciar estas alocações através do garbage collector. Em contraste, o \textit{Quick Sort} opera \textit{in-place}, utilizando apenas O($\log n$) para a pilha de chamadas recursivas, resultando em menor overhead de alocação e coleta de lixo.
+
+\textbf{Constantes multiplicativas e operações por elemento:} A análise assintótica não considera constantes, mas as implementações revelam diferenças importantes:
+\begin{itemize}
+    \item \textit{Quick Sort}: Uma passagem de particionamento com $n$ comparações e trocas condicionais
+    \item \textit{Merge Sort}: Múltiplas operações de \texttt{append}, criação de slices temporários, e cópias de dados entre diferentes regiões de memória
+\end{itemize}
+
+\textbf{Estratégia de pivô:} A escolha do pivô central (\texttt{len(arr) / 2}) na implementação do Quick Sort favorece bom desempenho com dados aleatórios, evitando o pior caso para vetores já ordenados que seria comum com pivô na primeira ou última posição.
+
+\subsection{Limitações e Considerações}
+
+É importante notar que os experimentos utilizaram dados aleatórios uniformemente distribuídos, favorecendo o caso médio dos algoritmos. A análise assintótica demonstrou que \textit{Quick Sort} pode degradar para O($n^2$) em entradas adversariais, embora a escolha do pivô central mitigue esse risco comparado a estratégias que escolhem o primeiro ou último elemento. 
+
+Especificamente para a implementação desenvolvida:
+\begin{itemize}
+    \item O \textit{Bubble Sort} com flag de detecção alcançaria O($n$) em vetores já ordenados, mas esse caso não foi testado nos experimentos com dados aleatórios
+    \item O \textit{Quick Sort} com pivô central (\texttt{len(arr)/2}) tem pior caso teórico O($n^2$) mas é menos suscetível a ele em dados típicos
+    \item O \textit{Merge Sort} garante O($n \log n$) em todas as situações, sendo preferível em cenários críticos onde o pior caso deve ser evitado
+\end{itemize}
+
+A análise de variabilidade experimental confirma a previsibilidade dos algoritmos: \textit{Merge Sort} e \textit{Quick Sort} apresentam coeficientes de variação abaixo de 3\%, enquanto \textit{Bubble Sort} apresenta maior variação (até 6\%), possivelmente devido à sensibilidade ao número de trocas realizadas dependendo da configuração específica dos dados.
+
+\subsection{Hipóteses sobre Divergências Menores}
+
+Embora haja forte convergência entre análises, algumas divergências menores são observadas:
+
+\begin{itemize}
+    \item \textbf{Diferença de desempenho entre Merge Sort e Quick Sort:} Não prevista pela análise assintótica (ambos O($n \log n$)), mas explicada por:
+    \begin{itemize}
+        \item Overhead de alocação de memória e garbage collection no Merge Sort
+        \item Operação \textit{in-place} versus criação de novos slices
+        \item Padrões de acesso à memória e eficiência do cache
+        \item Número de operações elementares por elemento (constantes escondidas na notação O)
+    \end{itemize}
+    
+    \item \textbf{Variabilidade nos tempos de execução:} Reflete fatores externos ao modelo assintótico:
+    \begin{itemize}
+        \item Escalonamento do sistema operacional (WSL sobre Windows)
+        \item Estado do cache e TLB (Translation Lookaside Buffer)
+        \item Garbage collection do runtime Go
+        \item Outras cargas do sistema durante execução
+    \end{itemize}
+    
+    \item \textbf{Tempo de geração dos datasets:} Incluído nos benchmarks conforme metodologia, adicionando componente O($n$) não considerado na análise assintótica pura dos algoritmos. Este overhead é proporcional mas constante para todos os algoritmos.
+    
+    \item \textbf{Características específicas do Go:} A linguagem introduz abstrações (slices dinâmicos, garbage collection) que afetam o desempenho real mas não a complexidade assintótica.
+\end{itemize}
+
+Estas divergências não invalidam a análise assintótica, mas reforçam que a escolha prática de algoritmos deve considerar tanto complexidade teórica quanto fatores de implementação, linguagem de programação e arquitetura de hardware. A análise assintótica fornece limites fundamentais de escalabilidade, enquanto a análise experimental revela o comportamento real sob condições específicas.
 
 \section{Conclusão}
 
@@ -185,7 +435,7 @@ Merge Sort & -86.8\% & - & 36.9\% \\
 Quick Sort & -91.7\% & -36.9\% & - \\ \hline
 \multicolumn{4}{|c|}{$n = 10.000$} \\ \hline
 Bubble Sort & - & 98.4\% & 99.1\% \\ 
-Merge Sort & -98.4\% & - & 44.0\%- \\ 
+Merge Sort & -98.4\% & - & 44.0\% \\ 
 Quick Sort & -99.1\% & -44.0\% & - \\ \hline
 \multicolumn{4}{|c|}{$n = 100.000$} \\ \hline
 Bubble Sort & - & 99.9\% & 99.9\% \\ 
@@ -196,7 +446,13 @@ Quick Sort & -99.9\% & -49.1\% & - \\ \hline
 
 A Tabela~\ref{tab:comparacao_cruzada} apresenta a redução percentual de tempo médio de execução de cada algoritmo em relação aos outros, considerando a média em milissegundos. Cada célula indica o quanto o algoritmo da coluna é mais rápido (em termos de tempo de execução em milisegundos) em comparação com o algoritmo da linha.
 
-Este trabalho apresentou uma análise experimental abrangente de três algoritmos de ordenação fundamentais. Os resultados demonstram que o Quick Sort emergiu como o algoritmo mais eficiente em termos de tempo de execução nos testes realizados, apresentando desempenho aproximadamente 49\% superior ao Merge Sort em média. Entretanto, a escolha entre Merge Sort e Quick Sort deve considerar requisitos específicos da aplicação, como a necessidade de estabilidade ou tolerância ao pior cenário. Tais resultados obtidos fornecem uma base empírica sólida para a seleção de algoritmos de ordenação em aplicações práticas, complementando a análise teórica tradicional com dados de desempenho real.
+Este trabalho apresentou uma análise abrangente --- assintótica e experimental --- de três algoritmos de ordenação fundamentais. A análise assintótica estabeleceu as complexidades teóricas: O($n^2$) para Bubble Sort no caso médio, e O($n \log n$) para Merge Sort e Quick Sort. Os experimentos confirmaram estas previsões, demonstrando forte convergência entre teoria e prática.
+
+Os resultados experimentais revelam que Quick Sort emergiu como o algoritmo mais eficiente, apresentando desempenho aproximadamente 49\% superior ao Merge Sort em média. Esta diferença, não capturada pela análise assintótica, é explicada por fatores de implementação (localidade de cache, complexidade espacial) que afetam as constantes multiplicativas ignoradas pela notação Big-O.
+
+Foi possível chegar às mesmas conclusões fundamentais em ambas as análises: Bubble Sort é impraticável para grandes volumes de dados, enquanto Merge Sort e Quick Sort são eficientes e escaláveis. As divergências observadas (diferença de desempenho entre Merge Sort e Quick Sort) não contradizem a análise assintótica, mas demonstram a importância de considerar fatores de baixo nível na escolha prática de algoritmos.
+
+A complementaridade entre análise assintótica e experimental fica evidente: a primeira fornece garantias teóricas sobre escalabilidade e pior caso, enquanto a segunda revela o comportamento real considerando arquitetura de hardware e detalhes de implementação. Para aplicações críticas que exigem garantias de desempenho, Merge Sort é preferível; para desempenho médio otimizado com dados típicos, Quick Sort é a melhor escolha.
 
 \bibliographystyle{sbc}
 \bibliography{sbc-template}
